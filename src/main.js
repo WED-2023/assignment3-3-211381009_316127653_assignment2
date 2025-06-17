@@ -10,6 +10,7 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 import store from "./store";
 
 // Configure axios
+// Set baseURL to backend server (proxy will override this if configured)
 axios.defaults.baseURL = "http://localhost:3000";
 axios.defaults.withCredentials = true;
 

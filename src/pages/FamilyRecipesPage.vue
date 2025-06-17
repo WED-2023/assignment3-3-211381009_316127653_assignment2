@@ -43,7 +43,11 @@
               </p>
               <p class="card-text">
                 <i class="fas fa-clock"></i>
-                {{ recipe.readyInMinutes || "N/A" }}
+                {{
+                  recipe.readyInMinutes
+                    ? recipe.readyInMinutes + " minutes"
+                    : "N/A"
+                }}
               </p>
               <p class="card-text">
                 <i class="fas fa-calendar"></i>
@@ -55,12 +59,20 @@
                 </small>
               </div>
             </div>
-            <button
-              @click.stop="confirmDeleteRecipe(recipe.recipe_id)"
-              class="btn btn-sm btn-danger delete-btn"
-            >
-              <i class="fas fa-trash"></i> Delete
-            </button>
+            <div class="card-actions">
+              <button
+                @click.stop="viewRecipe(recipe.recipe_id)"
+                class="btn btn-sm btn-primary view-btn"
+              >
+                <i class="fas fa-eye"></i> View Recipe
+              </button>
+              <button
+                @click.stop="confirmDeleteRecipe(recipe.recipe_id)"
+                class="btn btn-sm btn-danger delete-btn"
+              >
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -137,9 +149,14 @@
 
                   <h6><i class="fas fa-calendar"></i> When to Make:</h6>
                   <p>{{ recipeDetails.whenToMake || "Anytime" }}</p>
-
                   <h6><i class="fas fa-clock"></i> Preparation Time:</h6>
-                  <p>{{ recipeDetails.readyInMinutes || "N/A" }}</p>
+                  <p>
+                    {{
+                      recipeDetails.readyInMinutes
+                        ? recipeDetails.readyInMinutes + " minutes"
+                        : "N/A"
+                    }}
+                  </p>
 
                   <h6><i class="fas fa-users"></i> Servings:</h6>
                   <p>{{ recipeDetails.servings || "N/A" }}</p>
@@ -700,11 +717,33 @@ export default {
   object-fit: cover;
 }
 
-.delete-btn {
+.card-actions {
   position: absolute;
   bottom: 10px;
   right: 10px;
   z-index: 10;
+  display: flex;
+  gap: 8px;
+}
+
+.view-btn {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.view-btn:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
 }
 
 .page-header {

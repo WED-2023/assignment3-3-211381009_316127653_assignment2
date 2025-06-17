@@ -58,13 +58,7 @@
         <div class="recipe-column">
           <!-- For Logged-in Users: Last Watched Recipes -->
           <div v-if="store.username" class="logged-in-section">
-            <div class="section-header text-center mb-4">
-              <h2 class="section-title">
-                <i class="fas fa-history me-2 text-info"></i>
-                Last watched recipes
-              </h2>
-            </div>
-            <LastWatchedRecipes />
+            <LastWatchedRecipes title="Last watched recipes" />
           </div>
 
           <!-- For Non-logged-in Users: Login Prompt -->
