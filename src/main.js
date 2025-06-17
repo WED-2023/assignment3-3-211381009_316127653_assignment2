@@ -1,19 +1,17 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import routes from './router/index';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router/index";
+import axios from "axios";
+import VueAxios from "vue-axios";
 
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.js';
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle.js";
 
-import store from './store';
+import store from "./store";
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes
-});
+// Configure axios
+axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.withCredentials = true;
 
 const app = createApp(App);
 
@@ -22,7 +20,32 @@ app.use(VueAxios, axios);
 
 app.config.globalProperties.store = store;
 
-app.config.globalProperties.toast = function (title, content, variant = null, append = false) {
+// Add route guards for authentication
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = store.username;
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!isAuthenticated) {
+      app.config.globalProperties.toast(
+        "Access Denied",
+        "Please login to access this page",
+        "warning"
+      );
+      next({ name: "login" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+app.config.globalProperties.toast = function (
+  title,
+  content,
+  variant = null,
+  append = false
+) {
   const toastContainerId = "toast-container";
   let toastContainer = document.getElementById(toastContainerId);
   if (!toastContainer) {
@@ -36,7 +59,9 @@ app.config.globalProperties.toast = function (title, content, variant = null, ap
   }
 
   const toast = document.createElement("div");
-  toast.className = `toast align-items-center text-bg-${variant || 'info'} border-0 show`;
+  toast.className = `toast align-items-center text-bg-${
+    variant || "info"
+  } border-0 show`;
   toast.setAttribute("role", "alert");
   toast.setAttribute("aria-live", "assertive");
   toast.setAttribute("aria-atomic", "true");
@@ -60,4 +85,4 @@ app.config.globalProperties.toast = function (title, content, variant = null, ap
   }, 3000);
 };
 
-app.mount('#app');
+app.mount("#app");
