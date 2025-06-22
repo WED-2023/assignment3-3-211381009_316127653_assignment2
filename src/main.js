@@ -9,9 +9,14 @@ import "bootstrap/dist/js/bootstrap.bundle.js";
 
 import store from "./store";
 
+// Global domain configuration
+// For local development, use: "http://localhost:3000"
+// For remote server, use your domain (e.g., "https://yourdomain.com")
+const domain_server = "https://amit-and-yali-cooking-site.cs.bgu.ac.il"; // Change this according to your needs
+
 // Configure axios
 // Set baseURL to backend server (proxy will override this if configured)
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = domain_server;
 axios.defaults.withCredentials = true;
 
 const app = createApp(App);
